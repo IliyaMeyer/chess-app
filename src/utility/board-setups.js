@@ -5,7 +5,7 @@ const boardSetups = () => {
 
   const createEmptyRow = (row) => {
     let boardRow = []
-    for (let column = 1; column <= 8; column++)
+    for (let column = 0; column < 8; column++)
       boardRow.push(makeSquare(true, row, column))
     return boardRow
   }
@@ -14,7 +14,7 @@ const boardSetups = () => {
 
     let emptyBoard = []
 
-    for (let row = 1; row <= 8; row++) {
+    for (let row = 0; row < 8; row++) {
       emptyBoard.push(createEmptyRow(row))
     }
 
@@ -28,7 +28,7 @@ const boardSetups = () => {
     const { BLACK, WHITE } = BOARD_STRINGS.pieceColors
 
     const createFirstRow = (pieceColor) => {
-      const row = pieceColor === WHITE ? 1 : 8
+      const row = pieceColor === WHITE ? 0 : 7
       const pieces = [
         names.CASTLE,
         names.HORSE,
@@ -40,15 +40,15 @@ const boardSetups = () => {
         names.CASTLE
       ]
       let boardRow = []
-      for (let column = 1; column <= 8; column++)
-        boardRow.push(makeSquare(true, row, column, pieces[column - 1], pieceColor))
+      for (let column = 0; column < 8; column++)
+        boardRow.push(makeSquare(true, row, column, pieces[column], pieceColor))
       return boardRow
     }
 
     const createPawnRow = (pieceColor) => {
-      const row = pieceColor === WHITE ? 2 : 7
+      const row = pieceColor === WHITE ? 1 : 6
       let boardRow = []
-      for (let column = 1; column <= 8; column++)
+      for (let column = 0; column < 8; column++)
         boardRow.push(makeSquare(true, row, column, names.PAWN, pieceColor))
       return boardRow
     }
@@ -57,7 +57,7 @@ const boardSetups = () => {
 
     gameBoard.push(createFirstRow(WHITE))
     gameBoard.push(createPawnRow(WHITE))
-    for (let row = 3; row <= 6; row++)
+    for (let row = 2; row <= 5; row++)
       gameBoard.push(createEmptyRow(row))
     gameBoard.push(createPawnRow(BLACK))
     gameBoard.push(createFirstRow(BLACK))

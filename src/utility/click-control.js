@@ -12,10 +12,6 @@ const select = (row, column, board, currentTurn) => {
   const { BLUE, RED, GOLD } = BOARD_STRINGS.tintColors
   const { WHITE, BLACK, NONE } = BOARD_STRINGS.pieceColors
 
-  const checkCheck = () => {
-
-  }
-
   const moveOneBlock = (x, y, direction) => {
 
     switch (direction) {
@@ -68,8 +64,8 @@ const select = (row, column, board, currentTurn) => {
       case (NONE):
         newBoard[y][x] = makeSquare(
           true,
-          y + 1,
-          x + 1,
+          y,
+          x,
           newBoard[y][x].props.coveringPiece,
           newBoard[y][x].props.pieceColor,
           BLUE
@@ -82,8 +78,8 @@ const select = (row, column, board, currentTurn) => {
       default:
         newBoard[y][x] = makeSquare(
           true,
-          y + 1,
-          x + 1,
+          y,
+          x,
           newBoard[y][x].props.coveringPiece,
           newBoard[y][x].props.pieceColor,
           RED
@@ -99,8 +95,8 @@ const select = (row, column, board, currentTurn) => {
 
   const moveContinuous = (directions) => {
     directions.map((direction) => {
-      let x = column - 1
-      let y = row - 1
+      let x = column
+      let y = row
       let flag = true
       while (flag === true){
         const results = moveOneBlock(x, y, direction)
@@ -117,8 +113,8 @@ const select = (row, column, board, currentTurn) => {
   }
 
   const movePawn = () => {
-    const x = column - 1
-    let y = row - 1
+    const x = column
+    let y = row
     switch (currentTurn) {
       case (WHITE):
           y++
@@ -132,20 +128,20 @@ const select = (row, column, board, currentTurn) => {
     if (newBoard[y][x].props.coveringPiece === BOARD_STRINGS.names.EMPTY) {
       newBoard[y][x] = makeSquare(
         true,
-        y + 1,
-        x + 1,
+        y,
+        x,
         newBoard[y][x].props.coveringPiece,
         newBoard[y][x].props.pieceColor,
         BLUE
       )
-      const startRow = currentTurn === WHITE ? 2 : 7
+      const startRow = currentTurn === WHITE ? 1 : 6
       const twoBlockJump = currentTurn === WHITE ? 1 : -1
       if (row === startRow &&
         newBoard[y + twoBlockJump][x].props.coveringPiece === BOARD_STRINGS.names.EMPTY) {
         newBoard[y + twoBlockJump][x] = makeSquare(
           true,
-          y + twoBlockJump + 1,
-          x + 1,
+          y + twoBlockJump,
+          x,
           newBoard[y + twoBlockJump][x].props.coveringPiece,
           newBoard[y + twoBlockJump][x].props.pieceColor,
           BLUE
@@ -158,8 +154,8 @@ const select = (row, column, board, currentTurn) => {
       if (newX >= 0 && newX < 8 && newBoard[y][newX].props.pieceColor === getOppositeColor(currentTurn)) {
         newBoard[y][newX] = makeSquare(
           true,
-          y + 1,
-          newX + 1,
+          y,
+          newX,
           newBoard[y][newX].props.coveringPiece,
           newBoard[y][newX].props.pieceColor,
           RED
@@ -174,15 +170,15 @@ const select = (row, column, board, currentTurn) => {
   const moveHorse = () => {
     let displacements = [[1, 2], [1, -2], [-1, 2], [-1, -2] , [2, 1,],  [2, -1], [-2, 1], [-2, -1]]
     displacements.map((displacementPair) => {
-      const x = displacementPair[0] + column - 1
-      const y = displacementPair[1] + row - 1
+      const x = displacementPair[0] + column
+      const y = displacementPair[1] + row
       if (x >= 0 && x < 8 && y >= 0 && y < 8)
         switch (newBoard[y][x].props.pieceColor){
           case (NONE):
             newBoard[y][x] = makeSquare(
               true,
-              y + 1,
-              x + 1,
+              y,
+              x,
               newBoard[y][x].props.coveringPiece,
               newBoard[y][x].props.pieceColor,
               BLUE
@@ -193,8 +189,8 @@ const select = (row, column, board, currentTurn) => {
           default:
             newBoard[y][x] = makeSquare(
               true,
-              y + 1,
-              x + 1,
+              y,
+              x,
               newBoard[y][x].props.coveringPiece,
               newBoard[y][x].props.pieceColor,
               RED
@@ -213,10 +209,10 @@ const select = (row, column, board, currentTurn) => {
   }
   const moveKing = () => {
     Object.values(BOARD_STRINGS.directions).map((direction) => {
-      return moveOneBlock(column - 1, row - 1, direction)
+      return moveOneBlock(column, row, direction)
     })
-    let y = row - 1
-    let x = column - 1
+    let y = row
+    let x = column
     if (
       newBoard[y][x].props.originalSquare &&
       newBoard[y][x + 1].props.coveringPiece === NONE &&
@@ -225,8 +221,8 @@ const select = (row, column, board, currentTurn) => {
     ) {
       newBoard[y][x + 2] = makeSquare(
         true,
-        y + 1,
-        x + 3,
+        y,
+        x + 2,
         newBoard[y][x + 2].props.coveringPiece,
         newBoard[y][x + 2].props.pieceColor,
         GOLD
@@ -241,8 +237,8 @@ const select = (row, column, board, currentTurn) => {
     ) {
       newBoard[y][x - 3] = makeSquare(
         true,
-        y + 1,
-        x - 2,
+        y,
+        x - 3,
         newBoard[y][x - 3].props.coveringPiece,
         newBoard[y][x - 3].props.pieceColor,
         GOLD
@@ -252,7 +248,7 @@ const select = (row, column, board, currentTurn) => {
 
   const { names } = BOARD_STRINGS
 
-  switch (board[row - 1][column - 1].props.coveringPiece) {
+  switch (board[row][column].props.coveringPiece) {
     case (names.PAWN):
       movePawn()
       break
@@ -289,22 +285,22 @@ const move = (positionInitial, positionFinal, board, isGold) => {
   const movePiece = (yInitial, yFinal, xInitial, xFinal) => {
     newBoard[yFinal][xFinal] = makeSquare(
       false,
-      yFinal + 1,
-      xFinal + 1,
+      yFinal,
+      xFinal,
       board[yInitial][xInitial].props.coveringPiece,
       board[yInitial][xInitial].props.pieceColor
     )
     newBoard[yInitial][xInitial] = makeSquare(
       false,
-      yInitial + 1,
-      xInitial + 1
+      yInitial,
+      xInitial
     )
   }
 
-  const yInitial = positionInitial.row - 1
-  const yFinal = positionFinal.row - 1
-  const xInitial = positionInitial.column - 1
-  const xFinal = positionFinal.column - 1
+  const yInitial = positionInitial.row
+  const yFinal = positionFinal.row
+  const xInitial = positionInitial.column
+  const xFinal = positionFinal.column
 
   if (isGold) {
     const castleXPositions = xFinal === 6 ? [7, 5] : [0, 2]
