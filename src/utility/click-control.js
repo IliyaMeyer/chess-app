@@ -1,7 +1,7 @@
 import makeSquare from './make-square'
 import BOARD_STRINGS from "../constants/board-strings";
 
-const select = (row, column, board, currentTurn, kingPos) => {
+const select = (row, column, board, currentTurn) => {
 
   let newBoard = []
   board.map((boardRow) => {
