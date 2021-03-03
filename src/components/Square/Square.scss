@@ -1,0 +1,18 @@
+@import 'src/utility/variables';
+
+.square {
+
+  &__container {
+    background-color: black;
+    width: $square-size;
+    height: $square-size;
+  }
+
+  &__tint {
+    opacity: 60%;
+    width: $square-size;
+    height: $square-size;
+    position: absolute;
+  }
+
+}

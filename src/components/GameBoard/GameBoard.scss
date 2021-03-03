@@ -1,0 +1,21 @@
+.game-board {
+
+  &__container {
+
+  }
+
+  &__grid {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__column {
+
+  }
+
+}

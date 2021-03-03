@@ -1,0 +1,22 @@
+@import 'src/utility/variables';
+
+.piece-image {
+
+  &__container {
+    width: $square-size;
+    height: $square-size;
+  }
+
+  &__black {
+    width: $square-size;
+    height: $square-size;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+  }
+
+  &__white {
+    width: $square-size;
+    height: $square-size;
+  }
+
+}
