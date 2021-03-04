@@ -2,7 +2,7 @@ import './Square.scss'
 import BOARD_STRINGS from '../../constants/board-strings'
 import PieceImage from '../PieceImage'
 
-const Square = ({ originalSquare, row, column, coveringPiece, pieceColor, tint }) => {
+const Square = ({ row, column, coveringPiece, pieceColor, tint }) => {
 
   const getColor = () => {
     const { BLACK, WHITE } = BOARD_STRINGS.squareColors

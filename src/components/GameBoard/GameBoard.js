@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './GameBoard.scss'
-import boardSetups from '../../utility/board-setups'
+import { getDefaultStartBoard } from '../../utility/board-setups'
 import { select, move } from  '../../utility/click-control'
 import BOARD_STRINGS from '../../constants/board-strings'
 
@@ -9,8 +9,8 @@ const GameBoard = () => {
   const { SELECT, MOVE } = BOARD_STRINGS.actions
   const { WHITE, BLACK } = BOARD_STRINGS.pieceColors
 
-  const [board, setBoard] = useState(boardSetups().getDefaultStartBoard)
-  const [prevBoard, setPrevBoard] = useState(boardSetups().getDefaultStartBoard)
+  const [board, setBoard] = useState(getDefaultStartBoard)
+  const [prevBoard, setPrevBoard] = useState(getDefaultStartBoard)
   const [action, setAction] = useState(SELECT)
   const [currentTurn, setCurrentTurn] = useState(WHITE)
   const [selectedSquare, setSelectedSquare] = useState()
