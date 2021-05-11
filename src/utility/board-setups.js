@@ -64,4 +64,21 @@ const getDefaultStartBoard = () => {
 
 }
 
+const getDefaultKingPositions = () => {
+
+  const { WHITE, BLACK } = BOARD_STRINGS.pieceColors
+
+  return {
+    WHITE: {
+      row: 0,
+      column: 4
+    },
+    'BLACK': {
+      row: 7,
+      column: 4
+    }
+  }
+
+}
+
 export { getEmptyBoard, getDefaultStartBoard }

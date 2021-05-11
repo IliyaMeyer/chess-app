@@ -16,6 +16,10 @@ const GameBoard = () => {
   const [selectedSquare, setSelectedSquare] = useState()
   const [kingPositions, setKingPositions] = useState()
 
+  const myFunction = () => {
+    return 'no'
+  }
+
   const handleSquareClick = (square) => {
     switch (action) {
       case (SELECT):
