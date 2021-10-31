@@ -14,7 +14,6 @@ const GameBoard = () => {
   const [action, setAction] = useState(SELECT)
   const [currentTurn, setCurrentTurn] = useState(WHITE)
   const [selectedSquare, setSelectedSquare] = useState()
-  const [kingPositions, setKingPositions] = useState()
 
   const myFunction = () => {
     return 'no'

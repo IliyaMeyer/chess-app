@@ -10,7 +10,7 @@ const Square = ({ row, column, coveringPiece, pieceColor, tint }) => {
   }
 
   const getTint = () => {
-    return {backgroundColor: tint}
+    return { backgroundColor: tint }
   }
 
   return (
