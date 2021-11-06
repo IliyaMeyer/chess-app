@@ -32,7 +32,7 @@ const isCheck = (board = [], color) => {
     simpleBoard.push(row)
   }
 
-  const { CASTLE, QUEEN, BISHOP, KING, EMPTY, PAWN } = BOARD_STRINGS.names
+  const { CASTLE, QUEEN, BISHOP, KING, EMPTY, PAWN, HORSE } = BOARD_STRINGS.names
 
   // horse
   const horseDisplacements = [
@@ -40,47 +40,55 @@ const isCheck = (board = [], color) => {
       [2, -2]
   ]
   for (let i = 0; i < 2; i++)
-    for (let j = 0; j < 2; j++)
-      if (isOnBoard(horseDisplacements[0][kingPosition.x + i], horseDisplacements[0][kingPosition.y + j]) &&
-          simpleBoard[horseDisplacements[0][kingPosition.y + j]][horseDisplacements[0][kingPosition.x + i]] !== EMPTY &&
-          simpleBoard[horseDisplacements[0][kingPosition.y + j]][horseDisplacements[0][kingPosition.x + i]].color !==
-          color &&
-          simpleBoard[horseDisplacements[0][kingPosition.y + j]][horseDisplacements[0][kingPosition.x + i]].type ===
-          BOARD_STRINGS.names.HORSE
-      )
-        return true
+    for (let j = 0; j < 2; j++) {
+      let horsePosition = {
+        x: horseDisplacements[0][i] + kingPosition.x,
+        y: horseDisplacements[1][j] + kingPosition.y
+      }
+      if (isOnBoard(horsePosition.x, horsePosition.y)) {
+        let square = simpleBoard[horsePosition.y][horsePosition.x]
+        if (square !== EMPTY && square.color !== color && square.type === HORSE)
+          return true
+      }
+      if (isOnBoard(horsePosition.y, horsePosition.x)) {
+        let square = simpleBoard[horsePosition.x][horsePosition.y]
+        if (square !== EMPTY && square.color !== color && square.type === HORSE)
+          return true
+      }
+    }
 
   // horizontal/vertical
   const crossPieces = [CASTLE, QUEEN]
   // up
   for (let i = kingPosition.y + 1; i < 8; i++)
-    if (simpleBoard[i][kingPosition.x].type !== EMPTY &&
-        simpleBoard[i][kingPosition.x].color !== color) {
-      if (simpleBoard[i][kingPosition.x].type in crossPieces)
+    if (simpleBoard[i][kingPosition.x].type !== EMPTY) {
+      if (crossPieces.includes(simpleBoard[i][kingPosition.x].type) &&
+          simpleBoard[i][kingPosition.x].color !== color)
         return true
       break
     }
   // down
-  for (let i = kingPosition.y - 1; i >= 0; i--)
-    if (simpleBoard[i][kingPosition.x].type !== EMPTY &&
-        simpleBoard[i][kingPosition.x].color !== color) {
-      if (simpleBoard[i][kingPosition.x].type in crossPieces)
+  for (let i = kingPosition.y - 1; i >= 0; i--) {
+    if (simpleBoard[i][kingPosition.x].type !== EMPTY) {
+      if (crossPieces.includes(simpleBoard[i][kingPosition.x].type) &&
+          simpleBoard[i][kingPosition.x].color !== color)
         return true
       break
     }
+  }
   // left
   for (let i = kingPosition.x - 1; i >= 0; i--)
-    if (simpleBoard[kingPosition.y][i].type !== EMPTY &&
-        simpleBoard[kingPosition.y][i].color !== color) {
-      if (simpleBoard[kingPosition.y][i].type in crossPieces)
+    if (simpleBoard[kingPosition.y][i].type !== EMPTY) {
+      if (crossPieces.includes(simpleBoard[kingPosition.y][i].type) &&
+          simpleBoard[kingPosition.y][i].color !== color)
         return true
       break
     }
   // right
   for (let i = kingPosition.x + 1; i < 8; i++)
-    if (simpleBoard[kingPosition.y][i].type !== EMPTY &&
-        simpleBoard[kingPosition.y][i].color !== color) {
-      if (simpleBoard[kingPosition.y][i].type in crossPieces)
+    if (simpleBoard[kingPosition.y][i].type !== EMPTY) {
+      if (crossPieces.includes(simpleBoard[kingPosition.y][i].type) &&
+          simpleBoard[kingPosition.y][i].color !== color)
         return true
       break
     }
@@ -89,36 +97,36 @@ const isCheck = (board = [], color) => {
   const diagonalPieces = [QUEEN, BISHOP]
   // top right
   for (let i = kingPosition.x + 1, j = kingPosition.y + 1; isOnBoard(i, j); i++, j++) {
-    if (simpleBoard[j][i].type !== EMPTY &&
-        simpleBoard[j][i].color !== color) {
-      if (simpleBoard[j][i].type in diagonalPieces)
+    if (simpleBoard[j][i].type !== EMPTY) {
+      if (diagonalPieces.includes(simpleBoard[j][i].type) &&
+          simpleBoard[j][i].color !== color)
         return true
       break
     }
   }
   // top left
   for (let i = kingPosition.x - 1, j = kingPosition.y + 1; isOnBoard(i, j); i--, j++) {
-    if (simpleBoard[j][i].type !== EMPTY &&
-        simpleBoard[j][i].color !== color) {
-      if (simpleBoard[j][i].type in diagonalPieces)
+    if (simpleBoard[j][i].type !== EMPTY) {
+      if (diagonalPieces.includes(simpleBoard[j][i].type) &&
+          simpleBoard[j][i].color !== color)
         return true
       break
     }
   }
   // bottom right
   for (let i = kingPosition.x + 1, j = kingPosition.y - 1; isOnBoard(i, j); i++, j--) {
-    if (simpleBoard[j][i].type !== EMPTY &&
-        simpleBoard[j][i].color !== color) {
-      if (simpleBoard[j][i].type in diagonalPieces)
+    if (simpleBoard[j][i].type !== EMPTY) {
+      if (diagonalPieces.includes(simpleBoard[j][i].type) &&
+          simpleBoard[j][i].color !== color)
         return true
       break
     }
   }
   // bottom left
   for (let i = kingPosition.x - 1, j = kingPosition.y - 1; isOnBoard(i, j); i--, j--) {
-    if (simpleBoard[j][i].type !== EMPTY &&
-        simpleBoard[j][i].color !== color) {
-      if (simpleBoard[j][i].type in diagonalPieces)
+    if (simpleBoard[j][i].type !== EMPTY) {
+      if (diagonalPieces.includes(simpleBoard[j][i].type) &&
+          simpleBoard[j][i].color !== color)
         return true
       break
     }
@@ -146,9 +154,11 @@ const isCheck = (board = [], color) => {
 }
 
 const synthesizeSquare = (originalSquare, row, column, coveringPiece, pieceColor, tint,
-                          positionInitial, board) => {
+                          positionInitial, board, currentTurn) => {
+
   // make sure that the move does not result in check for the current player
   if (board !== undefined) {
+    console.log(currentTurn)
     let newBoard = []
     board.map((boardRow) => {
       return newBoard.push(boardRow.slice())
@@ -159,7 +169,7 @@ const synthesizeSquare = (originalSquare, row, column, coveringPiece, pieceColor
         newBoard,
         tint === BOARD_STRINGS.tintColors.GOLD
     )
-    if (!isCheck(newBoard, pieceColor === 'black' ? 'black' : 'white'))
+    if (!isCheck(newBoard, currentTurn === 'black' ? 'black' : 'white'))
       return makeSquare(originalSquare, row, column, coveringPiece, pieceColor, tint)
   } else
     return makeSquare(originalSquare, row, column, coveringPiece, pieceColor, tint)
@@ -241,7 +251,8 @@ const select = (row, column, board, currentTurn) => {
           newBoard[y][x].props.pieceColor === WHITE ? WHITE : BLACK,
           BLUE,
           positionInitial,
-          board
+          board,
+          currentTurn
         )
         return {
           flag: true,
@@ -257,7 +268,8 @@ const select = (row, column, board, currentTurn) => {
           newBoard[y][x].props.pieceColor === WHITE ? WHITE : BLACK,
           RED,
           positionInitial,
-          board
+          board,
+          currentTurn
         )
         return {
           flag: false,
@@ -305,7 +317,8 @@ const select = (row, column, board, currentTurn) => {
         newBoard[y][x].props.pieceColor === WHITE ? WHITE : BLACK,
         BLUE,
         positionInitial,
-        board
+        board,
+        currentTurn
       )
       const startRow = currentTurn === WHITE ? 1 : 6
       const twoBlockJump = currentTurn === WHITE ? 1 : -1
@@ -319,7 +332,8 @@ const select = (row, column, board, currentTurn) => {
           newBoard[y + twoBlockJump][x].props.pieceColor === WHITE ? WHITE : BLACK,
           BLUE,
           positionInitial,
-          board
+          board,
+          currentTurn
         )
       }
     }
@@ -335,7 +349,8 @@ const select = (row, column, board, currentTurn) => {
           newBoard[y][newX].props.pieceColor === WHITE ? WHITE : BLACK,
           RED,
           positionInitial,
-          board
+          board,
+          currentTurn
         )
       }
       return []
@@ -360,7 +375,8 @@ const select = (row, column, board, currentTurn) => {
               newBoard[y][x].props.pieceColor === WHITE ? WHITE : BLACK,
               BLUE,
               positionInitial,
-              board
+              board,
+              currentTurn
             )
             break
           case (currentTurn):
@@ -374,7 +390,8 @@ const select = (row, column, board, currentTurn) => {
               newBoard[y][x].props.pieceColor === WHITE ? WHITE : BLACK,
               RED,
               positionInitial,
-              board
+              board,
+              currentTurn
             )
             break
         }
@@ -395,42 +412,46 @@ const select = (row, column, board, currentTurn) => {
     })
 
     // castling
-    let y = row
-    let x = column
-    if (
-      newBoard[y][x].props.originalSquare &&
-      newBoard[y][x + 1].props.coveringPiece === NONE &&
-      newBoard[y][x + 2].props.coveringPiece === NONE &&
-      newBoard[y][x + 3].props.originalSquare
-    ) {
-      newBoard[y][x + 2] = synthesizeSquare(
-        true,
-        y,
-        x + 2,
-        newBoard[y][x + 2].props.coveringPiece,
-        newBoard[y][x + 2].props.pieceColor === WHITE ? WHITE : BLACK,
-        GOLD,
-        positionInitial,
-        board
-      )
-    }
-    if (
-      newBoard[y][x].props.originalSquare &&
-      newBoard[y][x - 1].props.coveringPiece === NONE &&
-      newBoard[y][x - 2].props.coveringPiece === NONE &&
-      newBoard[y][x - 3].props.coveringPiece === NONE &&
-      newBoard[y][x - 4].props.originalSquare
-    ) {
-      newBoard[y][x - 3] = synthesizeSquare(
-        true,
-        y,
-        x - 3,
-        newBoard[y][x - 3].props.coveringPiece,
-        newBoard[y][x - 3].props.pieceColor === WHITE ? WHITE : BLACK,
-        GOLD,
-        positionInitial,
-        board
-      )
+    if (!isCheck(board, currentTurn === 'black' ? 'black' : 'white')) {
+      let y = row
+      let x = column
+      if (
+          newBoard[y][x].props.originalSquare &&
+          newBoard[y][x + 1].props.coveringPiece === NONE &&
+          newBoard[y][x + 2].props.coveringPiece === NONE &&
+          newBoard[y][x + 3].props.originalSquare
+      ) {
+        newBoard[y][x + 2] = synthesizeSquare(
+            true,
+            y,
+            x + 2,
+            newBoard[y][x + 2].props.coveringPiece,
+            newBoard[y][x + 2].props.pieceColor === WHITE ? WHITE : BLACK,
+            GOLD,
+            positionInitial,
+            board,
+            currentTurn
+        )
+      }
+      if (
+          newBoard[y][x].props.originalSquare &&
+          newBoard[y][x - 1].props.coveringPiece === NONE &&
+          newBoard[y][x - 2].props.coveringPiece === NONE &&
+          newBoard[y][x - 3].props.coveringPiece === NONE &&
+          newBoard[y][x - 4].props.originalSquare
+      ) {
+        newBoard[y][x - 3] = synthesizeSquare(
+            true,
+            y,
+            x - 3,
+            newBoard[y][x - 3].props.coveringPiece,
+            newBoard[y][x - 3].props.pieceColor === WHITE ? WHITE : BLACK,
+            GOLD,
+            positionInitial,
+            board,
+            currentTurn
+        )
+      }
     }
 
   }
