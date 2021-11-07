@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './GameBoard.scss'
 import { getDefaultStartBoard } from '../../utility/board-setups'
-import { select, move } from  '../../utility/click-control'
+import { select, move, isCheck, canMove } from  '../../utility/click-control'
 import BOARD_STRINGS from '../../constants/board-strings'
 
 const GameBoard = () => {
@@ -14,10 +14,6 @@ const GameBoard = () => {
   const [action, setAction] = useState(SELECT)
   const [currentTurn, setCurrentTurn] = useState(WHITE)
   const [selectedSquare, setSelectedSquare] = useState()
-
-  const myFunction = () => {
-    return 'no'
-  }
 
   const handleSquareClick = (square) => {
     switch (action) {
@@ -49,7 +45,28 @@ const GameBoard = () => {
 
   return (
     <div className={'game-board__container'}>
-      {currentTurn}{' '}{action}
+      {currentTurn}{' '}{action}{'; '}
+      {(isCheck(board, currentTurn) &&
+          (
+              (
+                  <span style={{'color': 'lime'}}>
+                    CHECK
+                  </span>
+              ) || (
+                  !canMove(board, currentTurn) &&
+                  (
+                      <span style={{'color': 'red'}}>
+                        MATE
+                      </span>
+                  )
+              )
+          )
+      ) || (!canMove(board, currentTurn) && (
+          <span style={{'color': 'yellow'}}>
+            STALEMATE
+          </span>
+          )
+      )}
       <div className={'game-board__grid'}>
         {board.map((boardRow) => (
           <div className={'game-board__row'}>

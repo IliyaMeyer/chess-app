@@ -11,6 +11,10 @@ const isOnBoard = (x, y) => {
   return (x >= 0 && y >= 0 && x < 8 && y < 8)
 }
 
+const canMove = (board = [], color) => {
+  return false
+}
+
 const isCheck = (board = [], color) => {
 
   let simpleBoard = []
@@ -134,9 +138,12 @@ const isCheck = (board = [], color) => {
 
   // check for other king
   for (let i = -1; i <= 1; i++)
-    for (let j = -1; j <= 1; j++)
-      if (isOnBoard(i, j) && simpleBoard[i][j].type === KING && simpleBoard[i][j].color !== color)
+    for (let j = -1; j <= 1; j++) {
+      let x = i + kingPosition.x
+      let y = j + kingPosition.y
+      if (isOnBoard(x, y) && simpleBoard[y][x].type === KING && simpleBoard[y][x].color !== color)
         return true
+    }
 
   // check for pawn
   const pawnDirection = color === BOARD_STRINGS.pieceColors.WHITE ? 1 : -1
@@ -151,6 +158,8 @@ const isCheck = (board = [], color) => {
       simpleBoard[kingPosition.y + pawnDirection][kingPosition.x - 1].type === PAWN)
     return true
 
+  return false
+
 }
 
 const synthesizeSquare = (originalSquare, row, column, coveringPiece, pieceColor, tint,
@@ -158,7 +167,6 @@ const synthesizeSquare = (originalSquare, row, column, coveringPiece, pieceColor
 
   // make sure that the move does not result in check for the current player
   if (board !== undefined) {
-    console.log(currentTurn)
     let newBoard = []
     board.map((boardRow) => {
       return newBoard.push(boardRow.slice())
@@ -523,4 +531,4 @@ const move = (positionInitial, positionFinal, board, isGold) => {
 
 }
 
-export { select, move }
+export { select, move, isCheck, canMove }
