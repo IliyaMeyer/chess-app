@@ -52,14 +52,7 @@ const GameBoard = () => {
                   <span style={{'color': 'lime'}}>
                     CHECK
                   </span>
-              ) || (
-                  !canMove(board, currentTurn) &&
-                  (
-                      <span style={{'color': 'red'}}>
-                        MATE
-                      </span>
-                  )
-              )
+              ) 
           )
       ) || (!canMove(board, currentTurn) && (
           <span style={{'color': 'yellow'}}>
