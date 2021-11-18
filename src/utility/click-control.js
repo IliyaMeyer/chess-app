@@ -31,6 +31,8 @@ const canMove = (board = [], color) => {
 
 const isCheck = (board = [], color) => {
 
+  if (board[4][1].props.coveringPiece === 'king')
+    console.log('k')
   let simpleBoard = []
   let kingPosition = {}
 
@@ -68,8 +70,12 @@ const isCheck = (board = [], color) => {
         if (square !== EMPTY && square.color !== color && square.type === HORSE)
           return true
       }
-      if (isOnBoard(horsePosition.y, horsePosition.x)) {
-        let square = simpleBoard[horsePosition.x][horsePosition.y]
+      horsePosition = {
+        x: horseDisplacements[1][j] + kingPosition.x,
+        y: horseDisplacements[0][i] + kingPosition.y
+      }
+      if (isOnBoard(horsePosition.x, horsePosition.y)) {
+        let square = simpleBoard[horsePosition.y][horsePosition.x]
         if (square !== EMPTY && square.color !== color && square.type === HORSE)
           return true
       }
