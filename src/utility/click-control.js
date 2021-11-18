@@ -12,7 +12,21 @@ const isOnBoard = (x, y) => {
 }
 
 const canMove = (board = [], color) => {
+
+  for (let row = 0; row < 8; row++)
+    for (let column = 0; column < 8; column++) {
+      let currentSquare = board[row][column]
+      if (currentSquare.props.pieceColor === color) {
+        let moveBoard = select(currentSquare.props.row, currentSquare.props.column, board, color)
+        for (let y = 0; y < 8; y++)
+          for (let x = 0; x < 8; x++)
+            if (moveBoard[y][x].props.tint !== undefined)
+              return true
+      }
+    }
+
   return false
+
 }
 
 const isCheck = (board = [], color) => {

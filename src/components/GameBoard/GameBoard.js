@@ -43,23 +43,29 @@ const GameBoard = () => {
     }
   }
 
+  const getGameStatusMessage = () => {
+
+    let messageColor = 'black'
+    let message = ''
+    let playerIsCheck = isCheck(board, currentTurn)
+    let playerCanMove = canMove(board, currentTurn)
+    if (playerIsCheck) {
+      message = 'CHECK'
+      if (!playerCanMove)
+        message += 'MATE'
+      messageColor = 'red'
+    } else if (!playerCanMove) {
+      message = 'STALEMATE'
+      messageColor = 'yellow'
+    }
+    return <span style={{'color': messageColor}}>
+      {message}
+    </span>
+  }
+
   return (
     <div className={'game-board__container'}>
-      {currentTurn}{' '}{action}{'; '}
-      {(isCheck(board, currentTurn) &&
-          (
-              (
-                  <span style={{'color': 'lime'}}>
-                    CHECK
-                  </span>
-              ) 
-          )
-      ) || (!canMove(board, currentTurn) && (
-          <span style={{'color': 'yellow'}}>
-            STALEMATE
-          </span>
-          )
-      )}
+      {currentTurn}{' '}{action}{'; '}{getGameStatusMessage()}
       <div className={'game-board__grid'}>
         {board.map((boardRow) => (
           <div className={'game-board__row'}>
